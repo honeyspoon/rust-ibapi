@@ -24,7 +24,7 @@ mod r#async;
 
 /// Wall Street Horizon metadata containing configuration and setup information.
 #[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, Default, PartialEq, Serialize, Deserialize)]
 pub struct WshMetadata {
     /// JSON string containing metadata information from Wall Street Horizon.
     pub data_json: String,
@@ -32,7 +32,7 @@ pub struct WshMetadata {
 
 /// Wall Street Horizon event data containing earnings calendar and corporate events.
 #[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, Default, PartialEq, Serialize, Deserialize)]
 pub struct WshEventData {
     /// JSON string containing event data from Wall Street Horizon.
     pub data_json: String,

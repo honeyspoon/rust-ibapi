@@ -146,6 +146,21 @@ pub struct Bar {
     pub count: i32,
 }
 
+impl Default for Bar {
+    fn default() -> Self {
+        Self {
+            date: OffsetDateTime::UNIX_EPOCH,
+            open: 0.0,
+            high: 0.0,
+            low: 0.0,
+            close: 0.0,
+            volume: 0.0,
+            wap: 0.0,
+            count: 0,
+        }
+    }
+}
+
 #[cfg(feature = "sync")]
 impl StreamDecoder<Bar> for Bar {
     const RESPONSE_MESSAGE_IDS: &[IncomingMessages] = &[IncomingMessages::RealTimeBars];
@@ -318,7 +333,7 @@ impl StreamDecoder<MarketDepths> for MarketDepths {
 
 /// Stores depth market data description.
 #[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
-#[derive(Debug, Default)]
+#[derive(Clone, Debug, Default, Serialize, Deserialize)]
 pub struct DepthMarketDataDescription {
     /// The exchange name
     pub exchange_name: String,

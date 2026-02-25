@@ -38,7 +38,7 @@ pub enum HistoricalParseError {
 
 /// Bar describes the historical data bar.
 #[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
-#[derive(Clone, Debug, PartialEq, Copy, Serialize, Deserialize)]
+#[derive(Clone, Copy, Debug, PartialEq, Serialize, Deserialize)]
 pub struct Bar {
     /// The bar's date and time (either as a yyyymmss hh:mm:ss formatted string or as system time according to the request). Time zone is the TWS time zone chosen on login.
     // pub time: OffsetDateTime,
@@ -57,6 +57,21 @@ pub struct Bar {
     pub wap: f64,
     /// The number of trades during the bar's timespan (only available for TRADES)
     pub count: i32,
+}
+
+impl Default for Bar {
+    fn default() -> Self {
+        Self {
+            date: OffsetDateTime::UNIX_EPOCH,
+            open: 0.0,
+            high: 0.0,
+            low: 0.0,
+            close: 0.0,
+            volume: 0.0,
+            wap: 0.0,
+            count: 0,
+        }
+    }
 }
 
 #[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
@@ -315,7 +330,7 @@ impl ToDuration for i32 {
 
 /// Histogram bucket entry returned from `reqHistogramData`.
 #[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
-#[derive(Debug, PartialEq, Clone, Copy, Serialize, Deserialize)]
+#[derive(Clone, Copy, Debug, Default, PartialEq, Serialize, Deserialize)]
 pub struct HistogramEntry {
     /// Price level represented by the bucket.
     pub price: f64,
@@ -361,7 +376,7 @@ pub enum HistoricalBarUpdate {
 
 /// Trading schedule describing sessions for a contract.
 #[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
-#[derive(Debug, PartialEq, Clone, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct Schedule {
     /// Overall start timestamp for the schedule.
     pub start: OffsetDateTime,
@@ -373,9 +388,20 @@ pub struct Schedule {
     pub sessions: Vec<Session>,
 }
 
+impl Default for Schedule {
+    fn default() -> Self {
+        Self {
+            start: OffsetDateTime::UNIX_EPOCH,
+            end: OffsetDateTime::UNIX_EPOCH,
+            time_zone: String::new(),
+            sessions: Vec::new(),
+        }
+    }
+}
+
 /// Individual regular or special session entry.
 #[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
-#[derive(Debug, PartialEq, Clone, Copy, Serialize, Deserialize)]
+#[derive(Clone, Copy, Debug, PartialEq, Serialize, Deserialize)]
 pub struct Session {
     /// Calendar date for the session.
     pub reference: Date,
@@ -385,9 +411,19 @@ pub struct Session {
     pub end: OffsetDateTime,
 }
 
+impl Default for Session {
+    fn default() -> Self {
+        Self {
+            reference: Date::MIN,
+            start: OffsetDateTime::UNIX_EPOCH,
+            end: OffsetDateTime::UNIX_EPOCH,
+        }
+    }
+}
+
 /// The historical tick's description. Used when requesting historical tick data with whatToShow = MIDPOINT
 #[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
-#[derive(Debug, PartialEq, Clone, Copy, Serialize, Deserialize)]
+#[derive(Clone, Copy, Debug, PartialEq, Serialize, Deserialize)]
 pub struct TickMidpoint {
     /// timestamp of the historical tick.
     pub timestamp: OffsetDateTime,
@@ -397,13 +433,24 @@ pub struct TickMidpoint {
     pub size: i32,
 }
 
+impl Default for TickMidpoint {
+    fn default() -> Self {
+        Self {
+            timestamp: OffsetDateTime::UNIX_EPOCH,
+            price: 0.0,
+            size: 0,
+        }
+    }
+}
+
 /// The historical tick's description. Used when requesting historical tick data with whatToShow = BID_ASK.
 #[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
-#[derive(Debug, PartialEq, Clone, Copy, Serialize, Deserialize)]
+#[derive(Clone, Copy, Debug, PartialEq, Serialize, Deserialize)]
 pub struct TickBidAsk {
     /// Timestamp of the historical tick.
     pub timestamp: OffsetDateTime,
     /// Tick attributes of historical bid/ask tick.
+    #[serde(flatten)]
     pub tick_attribute_bid_ask: TickAttributeBidAsk,
     /// Bid price of the historical tick.
     pub price_bid: f64,
@@ -415,9 +462,22 @@ pub struct TickBidAsk {
     pub size_ask: i32,
 }
 
+impl Default for TickBidAsk {
+    fn default() -> Self {
+        Self {
+            timestamp: OffsetDateTime::UNIX_EPOCH,
+            tick_attribute_bid_ask: TickAttributeBidAsk::default(),
+            price_bid: 0.0,
+            price_ask: 0.0,
+            size_bid: 0,
+            size_ask: 0,
+        }
+    }
+}
+
 /// Tick attributes accompanying bid/ask historical ticks.
 #[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
-#[derive(Debug, PartialEq, Clone, Copy, Serialize, Deserialize)]
+#[derive(Clone, Copy, Debug, Default, PartialEq, Serialize, Deserialize)]
 pub struct TickAttributeBidAsk {
     /// Indicates whether the bid is past the lower price band.
     pub bid_past_low: bool,
@@ -427,11 +487,12 @@ pub struct TickAttributeBidAsk {
 
 /// The historical last tick's description. Used when requesting historical tick data with whatToShow = TRADES.
 #[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
-#[derive(Debug, Serialize, Deserialize, PartialEq, Clone)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct TickLast {
     /// Timestamp of the historical tick.
     pub timestamp: OffsetDateTime,
     /// Tick attributes of historical bid/ask tick.
+    #[serde(flatten)]
     pub tick_attribute_last: TickAttributeLast,
     /// Last price of the historical tick.
     pub price: f64,
@@ -443,9 +504,22 @@ pub struct TickLast {
     pub special_conditions: String,
 }
 
+impl Default for TickLast {
+    fn default() -> Self {
+        Self {
+            timestamp: OffsetDateTime::UNIX_EPOCH,
+            tick_attribute_last: TickAttributeLast::default(),
+            price: 0.0,
+            size: 0,
+            exchange: String::new(),
+            special_conditions: String::new(),
+        }
+    }
+}
+
 /// Tick attributes accompanying trade historical ticks.
 #[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
-#[derive(Debug, PartialEq, Serialize, Deserialize, Clone, Copy)]
+#[derive(Clone, Copy, Debug, Default, PartialEq, Serialize, Deserialize)]
 pub struct TickAttributeLast {
     /// `true` if the trade occurred outside exchange limits.
     pub past_limit: bool,

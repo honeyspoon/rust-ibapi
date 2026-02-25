@@ -19,7 +19,9 @@
 //! ```
 
 // Core client
+#[cfg(any(feature = "async", feature = "sync"))]
 pub use crate::Client;
+#[cfg(any(feature = "async", feature = "sync"))]
 pub use crate::ConnectionOptions;
 pub use crate::Error;
 

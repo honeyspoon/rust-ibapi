@@ -27,15 +27,17 @@
 #![allow(clippy::uninlined_format_args)]
 #![allow(clippy::assertions_on_constants)]
 
-// Feature guards
-#[cfg(not(any(feature = "sync", feature = "async")))]
+// Feature guards – allow types-only use via the `utoipa` feature without
+// requiring a networking runtime.
+#[cfg(not(any(feature = "sync", feature = "async", feature = "utoipa")))]
 compile_error!(
     "You must enable at least one of the 'sync' or 'async' features to use this crate.\n\
      The 'async' feature is enabled by default; if you disabled default features, be sure to\n\
      opt back into either API:\n\
          ibapi = { version = \"2.0\", default-features = false, features = [\"sync\"] }\n\
          ibapi = { version = \"2.0\", default-features = false, features = [\"async\"] }\n\
-     You may also enable both to access the synchronous API under `client::blocking`."
+     You may also enable both to access the synchronous API under `client::blocking`.\n\
+     For types-only use (e.g. OpenAPI schemas), enable the `utoipa` feature."
 );
 
 /// Describes items present in an account.
@@ -86,7 +88,9 @@ pub(crate) mod connection;
 ///     println!("Received {} startup orders", orders.lock().unwrap().len());
 /// }
 /// ```
+#[cfg(any(feature = "async", feature = "sync"))]
 pub use connection::ConnectionOptions;
+#[cfg(any(feature = "async", feature = "sync"))]
 pub use connection::StartupMessageCallback;
 
 /// Common utilities shared across modules
@@ -134,6 +138,7 @@ mod server_versions;
 #[doc(inline)]
 pub use errors::Error;
 
+#[cfg(any(feature = "async", feature = "sync"))]
 #[doc(inline)]
 pub use client::Client;
 use std::sync::LazyLock;

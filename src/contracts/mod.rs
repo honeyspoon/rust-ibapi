@@ -609,6 +609,7 @@ pub struct DeltaNeutralContract {
 #[derive(Debug, Default, Clone, PartialEq, Serialize, Deserialize)]
 pub struct ContractDetails {
     /// A fully-defined Contract object.
+    #[serde(flatten)]
     pub contract: Contract,
     /// The market name for this product.
     pub market_name: String,
@@ -859,7 +860,7 @@ pub struct OptionComputation {
 
 /// Option chain metadata for a specific underlying security.
 #[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
-#[derive(Debug, Default)]
+#[derive(Clone, Debug, Default, Serialize, Deserialize)]
 pub struct OptionChain {
     /// The contract ID of the underlying security.
     pub underlying_contract_id: i32,
@@ -899,7 +900,7 @@ pub struct MarketRule {
 
 /// Price ladder entry describing the minimum tick between price bands.
 #[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
-#[derive(Debug, Default)]
+#[derive(Clone, Debug, Default, Serialize, Deserialize)]
 pub struct PriceIncrement {
     /// Lower inclusive edge where the increment applies.
     pub low_edge: f64,
