@@ -834,7 +834,7 @@ impl ToField for Vec<TagValue> {
 /// Receives option specific market data.
 /// TWS’s options model volatility, prices, and deltas, along with the present value of dividends expected on that options underlier.
 #[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
-#[derive(Debug, Default)]
+#[derive(Clone, Debug, Default, PartialEq, Serialize, Deserialize)]
 pub struct OptionComputation {
     /// Specifies the type of option computation.
     pub field: TickType,
@@ -880,7 +880,7 @@ pub struct OptionChain {
 
 /// Contract data and list of derivative security types
 #[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
-#[derive(Debug)]
+#[derive(Clone, Debug, Default, PartialEq, Serialize, Deserialize)]
 pub struct ContractDescription {
     /// Fully qualified contract metadata.
     pub contract: Contract,
@@ -889,7 +889,7 @@ pub struct ContractDescription {
 }
 
 #[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
-#[derive(Debug, Default)]
+#[derive(Clone, Debug, Default, PartialEq, Serialize, Deserialize)]
 /// Minimum price increment structure for a particular market rule ID.
 pub struct MarketRule {
     /// Market Rule ID requested.
@@ -900,7 +900,7 @@ pub struct MarketRule {
 
 /// Price ladder entry describing the minimum tick between price bands.
 #[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
-#[derive(Clone, Debug, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, Default, PartialEq, Serialize, Deserialize)]
 pub struct PriceIncrement {
     /// Lower inclusive edge where the increment applies.
     pub low_edge: f64,

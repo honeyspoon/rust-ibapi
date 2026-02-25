@@ -1,5 +1,7 @@
 //! StreamDecoder implementations for display group subscriptions
 
+use serde::{Deserialize, Serialize};
+
 use crate::common::error_helpers;
 use crate::messages::{IncomingMessages, RequestMessage, ResponseMessage};
 use crate::subscriptions::{DecoderContext, StreamDecoder};
@@ -12,7 +14,7 @@ use super::{decoders, encoders};
 /// When subscribed to a display group, this type is returned whenever the user
 /// changes the contract displayed in that group within TWS.
 #[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Clone, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
 pub struct DisplayGroupUpdate {
     /// Contract information string (e.g., "265598@SMART")
     pub contract_info: String,

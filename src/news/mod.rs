@@ -21,7 +21,7 @@ mod r#async;
 
 /// News provider information including code and name.
 #[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
-#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[derive(Clone, Debug, Default, PartialEq, Deserialize, Serialize)]
 pub struct NewsProvider {
     /// The provider code identifier.
     pub code: String,
@@ -31,7 +31,7 @@ pub struct NewsProvider {
 
 /// IB News Bulletin
 #[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
-#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[derive(Clone, Debug, Default, PartialEq, Deserialize, Serialize)]
 pub struct NewsBulletin {
     /// The unique identifier of the news bulletin.
     pub message_id: i32,

@@ -52,7 +52,7 @@ pub enum BarSize {
 
 /// Represents `BidAsk` tick by tick realtime tick.
 #[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
-#[derive(Debug, Serialize, Deserialize, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct BidAsk {
     /// The spread's date and time (either as a yyyymmss hh:mm:ss formatted string or as system time according to the request). Time zone is the TWS time zone chosen on login.
     pub time: OffsetDateTime,
@@ -88,7 +88,7 @@ impl StreamDecoder<BidAsk> for BidAsk {
 
 /// Attributes for bid/ask tick data.
 #[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
-#[derive(Debug, Serialize, Deserialize, PartialEq)]
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
 pub struct BidAskAttribute {
     /// Indicates if the bid price is past the daily low.
     pub bid_past_low: bool,
@@ -98,7 +98,7 @@ pub struct BidAskAttribute {
 
 /// Represents `MidPoint` tick by tick realtime tick.
 #[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
-#[derive(Debug, Serialize, Deserialize, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct MidPoint {
     /// The trade's date and time (either as a yyyymmss hh:mm:ss formatted string or as system time according to the request). Time zone is the TWS time zone chosen on login.
     pub time: OffsetDateTime,
@@ -177,7 +177,7 @@ impl StreamDecoder<Bar> for Bar {
 
 /// Represents `Last` or `AllLast` tick-by-tick real-time tick.
 #[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
-#[derive(Debug, Serialize, Deserialize, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct Trade {
     /// Tick type: `Last` or `AllLast`
     pub tick_type: String,
@@ -215,7 +215,7 @@ impl StreamDecoder<Trade> for Trade {
 
 /// Attributes for trade tick data.
 #[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
-#[derive(Debug, Serialize, Deserialize, PartialEq)]
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
 pub struct TradeAttribute {
     /// Indicates if the trade occurred past the limit price.
     pub past_limit: bool,
@@ -225,7 +225,7 @@ pub struct TradeAttribute {
 
 /// Specifies the type of data to show for real-time bars.
 #[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
-#[derive(Clone, Debug, Copy)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub enum WhatToShow {
     /// Trade data.
     Trades,
@@ -256,7 +256,7 @@ impl ToField for WhatToShow {
 
 /// Market depth data types.
 #[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
-#[derive(Debug, Serialize, Deserialize, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub enum MarketDepths {
     /// Level-1 depth update.
     MarketDepth(MarketDepth),
@@ -267,7 +267,7 @@ pub enum MarketDepths {
 }
 
 #[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
-#[derive(Debug, Default, Serialize, Deserialize, PartialEq)]
+#[derive(Clone, Copy, Debug, Default, PartialEq, Serialize, Deserialize)]
 /// Returns the order book.
 pub struct MarketDepth {
     /// The order book's row being updated
@@ -284,7 +284,7 @@ pub struct MarketDepth {
 
 /// Returns the order book.
 #[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
-#[derive(Debug, Default, Serialize, Deserialize, PartialEq)]
+#[derive(Clone, Debug, Default, PartialEq, Serialize, Deserialize)]
 pub struct MarketDepthL2 {
     /// The order book's row being updated
     pub position: i32,
@@ -333,7 +333,7 @@ impl StreamDecoder<MarketDepths> for MarketDepths {
 
 /// Stores depth market data description.
 #[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
-#[derive(Clone, Debug, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, Default, PartialEq, Serialize, Deserialize)]
 pub struct DepthMarketDataDescription {
     /// The exchange name
     pub exchange_name: String,
@@ -349,7 +349,7 @@ pub struct DepthMarketDataDescription {
 
 /// Various types of market data ticks.
 #[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
-#[derive(Debug)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub enum TickTypes {
     /// Price update tick.
     Price(TickPrice),
@@ -417,7 +417,7 @@ impl StreamDecoder<TickTypes> for TickTypes {
 
 /// Price tick data.
 #[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
-#[derive(Debug, Default)]
+#[derive(Clone, Debug, Default, PartialEq, Serialize, Deserialize)]
 pub struct TickPrice {
     /// Type of price tick (bid, ask, last, etc.).
     pub tick_type: TickType,
@@ -429,7 +429,7 @@ pub struct TickPrice {
 
 /// Attributes associated with price ticks.
 #[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
-#[derive(Debug, PartialEq, Default)]
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
 pub struct TickAttribute {
     /// Indicates if the order can be automatically executed.
     pub can_auto_execute: bool,
@@ -441,7 +441,7 @@ pub struct TickAttribute {
 
 /// Size tick data.
 #[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
-#[derive(Debug, Default)]
+#[derive(Clone, Copy, Debug, Default, PartialEq, Serialize, Deserialize)]
 pub struct TickSize {
     /// Type of size tick (bid size, ask size, etc.).
     pub tick_type: TickType,
@@ -451,7 +451,7 @@ pub struct TickSize {
 
 /// Combined price and size tick data.
 #[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
-#[derive(Debug, Default)]
+#[derive(Clone, Debug, Default, PartialEq, Serialize, Deserialize)]
 pub struct TickPriceSize {
     /// Type of price tick.
     pub price_tick_type: TickType,
@@ -467,7 +467,7 @@ pub struct TickPriceSize {
 
 /// String-based tick data.
 #[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
-#[derive(Debug, Default)]
+#[derive(Clone, Debug, Default, PartialEq, Serialize, Deserialize)]
 pub struct TickString {
     /// Type of string tick.
     pub tick_type: TickType,
@@ -477,7 +477,7 @@ pub struct TickString {
 
 /// Exchange for Physical (EFP) tick data.
 #[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
-#[derive(Debug, Default)]
+#[derive(Clone, Debug, Default, PartialEq, Serialize, Deserialize)]
 pub struct TickEFP {
     /// Type of EFP tick.
     pub tick_type: TickType,
@@ -499,7 +499,7 @@ pub struct TickEFP {
 
 /// Generic tick data.
 #[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
-#[derive(Debug, Default)]
+#[derive(Clone, Copy, Debug, Default, PartialEq, Serialize, Deserialize)]
 pub struct TickGeneric {
     /// Type of generic tick.
     pub tick_type: TickType,
@@ -509,7 +509,7 @@ pub struct TickGeneric {
 
 /// Parameters related to tick data requests.
 #[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
-#[derive(Debug, Default)]
+#[derive(Clone, Debug, Default, PartialEq, Serialize, Deserialize)]
 pub struct TickRequestParameters {
     /// Minimum tick increment.
     pub min_tick: f64,
