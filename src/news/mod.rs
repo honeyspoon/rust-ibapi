@@ -64,17 +64,6 @@ pub struct NewsArticle {
     pub extra_data: String,
 }
 
-impl Default for NewsArticle {
-    fn default() -> Self {
-        Self {
-            time: OffsetDateTime::UNIX_EPOCH,
-            provider_code: String::new(),
-            article_id: String::new(),
-            headline: String::new(),
-            extra_data: String::new(),
-        }
-    }
-}
 
 /// The type of news article ([ArticleType::Text] - plain text or html, [ArticleType::Binary] - binary data / pdf)
 #[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]

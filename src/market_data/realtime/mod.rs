@@ -69,18 +69,6 @@ pub struct BidAsk {
     pub bid_ask_attribute: BidAskAttribute,
 }
 
-impl Default for BidAsk {
-    fn default() -> Self {
-        Self {
-            time: OffsetDateTime::UNIX_EPOCH,
-            bid_price: 0.0,
-            ask_price: 0.0,
-            bid_size: 0.0,
-            ask_size: 0.0,
-            bid_ask_attribute: BidAskAttribute::default(),
-        }
-    }
-}
 
 #[cfg(feature = "sync")]
 impl StreamDecoder<BidAsk> for BidAsk {
@@ -120,14 +108,6 @@ pub struct MidPoint {
     pub mid_point: f64,
 }
 
-impl Default for MidPoint {
-    fn default() -> Self {
-        Self {
-            time: OffsetDateTime::UNIX_EPOCH,
-            mid_point: 0.0,
-        }
-    }
-}
 
 #[cfg(feature = "sync")]
 impl StreamDecoder<MidPoint> for MidPoint {
@@ -169,20 +149,6 @@ pub struct Bar {
     pub count: i32,
 }
 
-impl Default for Bar {
-    fn default() -> Self {
-        Self {
-            date: OffsetDateTime::UNIX_EPOCH,
-            open: 0.0,
-            high: 0.0,
-            low: 0.0,
-            close: 0.0,
-            volume: 0.0,
-            wap: 0.0,
-            count: 0,
-        }
-    }
-}
 
 #[cfg(feature = "sync")]
 impl StreamDecoder<Bar> for Bar {
@@ -219,19 +185,6 @@ pub struct Trade {
     pub special_conditions: String,
 }
 
-impl Default for Trade {
-    fn default() -> Self {
-        Self {
-            tick_type: String::new(),
-            time: OffsetDateTime::UNIX_EPOCH,
-            price: 0.0,
-            size: 0.0,
-            trade_attribute: TradeAttribute::default(),
-            exchange: String::new(),
-            special_conditions: String::new(),
-        }
-    }
-}
 
 #[cfg(feature = "sync")]
 impl StreamDecoder<Trade> for Trade {

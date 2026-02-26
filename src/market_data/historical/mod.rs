@@ -59,20 +59,6 @@ pub struct Bar {
     pub count: i32,
 }
 
-impl Default for Bar {
-    fn default() -> Self {
-        Self {
-            date: OffsetDateTime::UNIX_EPOCH,
-            open: 0.0,
-            high: 0.0,
-            low: 0.0,
-            close: 0.0,
-            volume: 0.0,
-            wap: 0.0,
-            count: 0,
-        }
-    }
-}
 
 #[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
 #[derive(Clone, Debug, Copy, PartialEq, Serialize, Deserialize)]
@@ -388,16 +374,6 @@ pub struct Schedule {
     pub sessions: Vec<Session>,
 }
 
-impl Default for Schedule {
-    fn default() -> Self {
-        Self {
-            start: OffsetDateTime::UNIX_EPOCH,
-            end: OffsetDateTime::UNIX_EPOCH,
-            time_zone: String::new(),
-            sessions: Vec::new(),
-        }
-    }
-}
 
 /// Individual regular or special session entry.
 #[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
@@ -411,15 +387,6 @@ pub struct Session {
     pub end: OffsetDateTime,
 }
 
-impl Default for Session {
-    fn default() -> Self {
-        Self {
-            reference: Date::MIN,
-            start: OffsetDateTime::UNIX_EPOCH,
-            end: OffsetDateTime::UNIX_EPOCH,
-        }
-    }
-}
 
 /// The historical tick's description. Used when requesting historical tick data with whatToShow = MIDPOINT
 #[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
@@ -433,15 +400,6 @@ pub struct TickMidpoint {
     pub size: i32,
 }
 
-impl Default for TickMidpoint {
-    fn default() -> Self {
-        Self {
-            timestamp: OffsetDateTime::UNIX_EPOCH,
-            price: 0.0,
-            size: 0,
-        }
-    }
-}
 
 /// The historical tick's description. Used when requesting historical tick data with whatToShow = BID_ASK.
 #[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
@@ -462,18 +420,6 @@ pub struct TickBidAsk {
     pub size_ask: i32,
 }
 
-impl Default for TickBidAsk {
-    fn default() -> Self {
-        Self {
-            timestamp: OffsetDateTime::UNIX_EPOCH,
-            tick_attribute_bid_ask: TickAttributeBidAsk::default(),
-            price_bid: 0.0,
-            price_ask: 0.0,
-            size_bid: 0,
-            size_ask: 0,
-        }
-    }
-}
 
 /// Tick attributes accompanying bid/ask historical ticks.
 #[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
@@ -504,18 +450,6 @@ pub struct TickLast {
     pub special_conditions: String,
 }
 
-impl Default for TickLast {
-    fn default() -> Self {
-        Self {
-            timestamp: OffsetDateTime::UNIX_EPOCH,
-            tick_attribute_last: TickAttributeLast::default(),
-            price: 0.0,
-            size: 0,
-            exchange: String::new(),
-            special_conditions: String::new(),
-        }
-    }
-}
 
 /// Tick attributes accompanying trade historical ticks.
 #[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
