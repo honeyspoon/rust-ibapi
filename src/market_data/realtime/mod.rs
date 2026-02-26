@@ -65,7 +65,21 @@ pub struct BidAsk {
     /// tick-by-tick real-time tick ask size
     pub ask_size: f64,
     /// tick-by-tick real-time bid/ask tick attribs (bit 0 - bid past low, bit 1 - ask past high)
+    #[serde(flatten)]
     pub bid_ask_attribute: BidAskAttribute,
+}
+
+impl Default for BidAsk {
+    fn default() -> Self {
+        Self {
+            time: OffsetDateTime::UNIX_EPOCH,
+            bid_price: 0.0,
+            ask_price: 0.0,
+            bid_size: 0.0,
+            ask_size: 0.0,
+            bid_ask_attribute: BidAskAttribute::default(),
+        }
+    }
 }
 
 #[cfg(feature = "sync")]
@@ -104,6 +118,15 @@ pub struct MidPoint {
     pub time: OffsetDateTime,
     /// mid point
     pub mid_point: f64,
+}
+
+impl Default for MidPoint {
+    fn default() -> Self {
+        Self {
+            time: OffsetDateTime::UNIX_EPOCH,
+            mid_point: 0.0,
+        }
+    }
 }
 
 #[cfg(feature = "sync")]
@@ -188,11 +211,26 @@ pub struct Trade {
     /// Tick last size
     pub size: f64,
     /// Tick attributes (bit 0 - past limit, bit 1 - unreported)
+    #[serde(flatten)]
     pub trade_attribute: TradeAttribute,
     /// Tick exchange
     pub exchange: String,
     /// Tick special conditions
     pub special_conditions: String,
+}
+
+impl Default for Trade {
+    fn default() -> Self {
+        Self {
+            tick_type: String::new(),
+            time: OffsetDateTime::UNIX_EPOCH,
+            price: 0.0,
+            size: 0.0,
+            trade_attribute: TradeAttribute::default(),
+            exchange: String::new(),
+            special_conditions: String::new(),
+        }
+    }
 }
 
 #[cfg(feature = "sync")]
