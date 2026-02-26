@@ -1,11 +1,13 @@
 //! Domain types for the accounts module
 
+use serde::{Deserialize, Serialize};
 use std::fmt;
 use std::ops::Deref;
 
 /// Account identifier
 #[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
-#[derive(Debug, Clone, PartialEq, Eq, Hash)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[serde(transparent)]
 pub struct AccountId(pub String);
 
 impl Deref for AccountId {
@@ -36,7 +38,8 @@ impl From<&str> for AccountId {
 
 /// Model code identifier
 #[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
-#[derive(Debug, Clone, PartialEq, Eq, Hash)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[serde(transparent)]
 pub struct ModelCode(pub String);
 
 impl Deref for ModelCode {
@@ -67,7 +70,8 @@ impl From<&str> for ModelCode {
 
 /// Contract identifier
 #[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[serde(transparent)]
 pub struct ContractId(pub i32);
 
 impl ContractId {
@@ -93,7 +97,8 @@ impl From<i32> for ContractId {
 
 /// Account group for filtering
 #[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(transparent)]
 pub struct AccountGroup(pub String);
 
 impl AccountGroup {

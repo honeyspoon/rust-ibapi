@@ -170,7 +170,7 @@ impl ToField for Currency {
 
 /// Option right (Call or Put)
 #[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
 pub enum OptionRight {
     /// Call option right.
     Call,
@@ -196,7 +196,8 @@ impl fmt::Display for OptionRight {
 
 /// Validated strike price (must be positive)
 #[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
-#[derive(Debug, Clone, Copy, PartialEq)]
+#[derive(Debug, Clone, Copy, PartialEq, serde::Serialize, serde::Deserialize)]
+#[serde(transparent)]
 pub struct Strike(f64);
 
 impl Strike {
@@ -222,7 +223,7 @@ impl Strike {
 
 /// Date for option expiration
 #[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Debug, Clone, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
 pub struct ExpirationDate {
     year: u16,
     month: u8,
@@ -312,7 +313,7 @@ impl fmt::Display for ExpirationDate {
 
 /// Contract month for futures
 #[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Debug, Clone, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
 pub struct ContractMonth {
     year: u16,
     month: u8,
@@ -407,7 +408,8 @@ impl fmt::Display for ContractMonth {
 
 /// CUSIP identifier
 #[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Debug, Clone, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
+#[serde(transparent)]
 pub struct Cusip(pub String);
 
 impl Cusip {
@@ -448,7 +450,8 @@ impl fmt::Display for Cusip {
 
 /// ISIN identifier
 #[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Debug, Clone, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
+#[serde(transparent)]
 pub struct Isin(pub String);
 
 impl Isin {
@@ -489,7 +492,7 @@ impl fmt::Display for Isin {
 
 /// Bond identifier type
 #[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Debug, Clone, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
 pub enum BondIdentifier {
     /// A bond identified by a CUSIP code.
     Cusip(Cusip),
@@ -499,7 +502,7 @@ pub enum BondIdentifier {
 
 /// Trading action for spread/combo legs
 #[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
 pub enum LegAction {
     /// Buy the leg.
     Buy,
